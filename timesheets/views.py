@@ -1,3 +1,11 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
-# Create your views here.
+
+def index(request):
+    """
+    Returns a basic response.
+    :param request: Django http request
+    :return:
+    """
+    return HttpResponse("If this works then you are running the server correctly!")
