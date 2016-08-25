@@ -8,4 +8,4 @@ def index(request):
     :param request: Django http request
     :return:
     """
-    return HttpResponse("If this works then you are running the server correctly! Welcome to SEPGroup8")
+    return HttpResponse("If this works then you are running the server correctly! Welcome to SEPGroup8 HELLO ALL")
