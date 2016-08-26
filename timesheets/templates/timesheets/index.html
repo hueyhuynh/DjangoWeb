@@ -1,1 +1,17 @@
 <h1>Hi</h1>
+{% if user.is_authenticated %}
+    Kev's a loser
+    <form method="POST" action="{% url 'logout' %}">
+        <button action="submit">Logout</button>
+        {% csrf_token %}
+    </form>
+{% else %}
+    <form action="/your-name/" method="post">
+    {% for field in form %}
+        {{ field.label_tag }}
+        {{ field }}
+    <input type="submit" value="Submit" />
+    {% endfor %}
+    {% csrf_token %}
+</form>
+{% endif %}
