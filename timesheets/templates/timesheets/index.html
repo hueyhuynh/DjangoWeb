@@ -1,21 +1,16 @@
 <h1>Hi</h1>
 {% if user.is_authenticated %}
-    Logged in
-    <form action="/your-name/" method="post">
-    {% for field in form %}
-        {{ field.label_tag }}
-        {{ field }}
-    <input type="submit" value="Submit" />
-    {% endfor %}
-    {% csrf_token %}
-
-{% else %}
-
     <form method="POST" action="{% url 'logout' %}">
         <button action="submit">Logout</button>
            {% csrf_token %}
     </form>
-
-
+{% else %}
+    <form action="dashboard.html" method="POST">
+    {% for field in form %}
+        {{ field.label_tag }}
+        {{ field }}
+    {% endfor %}
+    <input type="submit" value="Login" />
+    {% csrf_token %}
 </form>
 {% endif %}
