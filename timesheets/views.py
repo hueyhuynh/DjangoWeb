@@ -38,12 +38,10 @@ def registration_form(request):
     if request.method == 'POST':
         # Create a RegistrationForm instance with the submitted data
         form = RegistrationForm(request.POST)
-        # is_valid validates a form and returns True if it is valid and
+        # returns True if it is valid and
         # False if it is invalid.
         if form.is_valid():
-            # The form is valid and you could save it to a database
-            # by creating a model object and populating the
-            # data from the form object, but here we are just
+            # If form is valid
             # rendering a success template page.
             return render(request, "timesheets/success.html", '')
 
