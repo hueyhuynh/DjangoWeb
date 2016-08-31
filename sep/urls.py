@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.conf.urls import include
 
 from timesheets import views
 
@@ -22,5 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
     url(r'userLogout', views.userLogout, name='userLogout'),
-    url(r'dashboard', views.dashboard, name='dashboard')
+    url(r'dashboard', views.dashboard, name='dashboard'),
+    url(r'registration_form', views.registration_form, name='registration_form'),
+    url(r'^captcha/', include('captcha.urls')),
 ]
