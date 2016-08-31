@@ -38,7 +38,7 @@ def registration_form(request):
     if request.method == 'POST':
         # Create a RegistrationForm instance with the submitted data
         form = RegistrationForm(request.POST)
-        # returns True if it is valid and
+        # Returns True if it is valid and
         # False if it is invalid.
         if form.is_valid():
             # If form is valid
