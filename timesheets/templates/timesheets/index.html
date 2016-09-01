@@ -1,22 +1,26 @@
-<h1>Hi</h1>
-{% if user.is_authenticated %}
-    <form method="POST" action="{% url 'logout' %}">
-        <button action="submit">Logout</button>
-           {% csrf_token %}
+<body >
+<div align="center">
+    <h1>Hi</h1>
+    {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'userLogout' %}">
+            <button action="submit">Logout</button>
+               {% csrf_token %}
+        </form>
+    {% else %}
+        <form action="dashboard.html" method="POST">
+        <table>
+            {% for field in form %}
+                <tr>
+                    <td>{{ field.label_tag }}</td>
+                    <td>{{ field }}</td>
+                </tr>
+                {% endfor %}
+        </table>
+        <input type="submit" value="Login"/>
+        <p>Forgot Your Password? Click <a href="Reset_Password.html">HERE</a></p>
+        <p>New User?<a href="registration_form.html"> Create New Account</a></p>
+        {% csrf_token %}
     </form>
-{% else %}
-    <form action="dashboard.html" method="POST">
-    <table>
-        {% for field in form %}
-            <tr>
-                <td>{{ field.label_tag }}</td>
-                <td>{{ field }}</td>
-            </tr>
-            {% endfor %}
-    </table>
-    <input type="submit" value="Login"/>
-    <p>Forgot Your Password? Click <a href="Reset_Password.html">HERE</a></p>
-    <p>New User?<a href="registration_form.html"> Create New Account</a></p>
-    {% csrf_token %}
-</form>
-{% endif %}
+    {% endif %}
+</div>
+</body>

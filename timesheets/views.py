@@ -8,13 +8,14 @@ from .forms import RegistrationForm
 def index(request):
 #   template = loader.get_template('timesheets/index.html')
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = UserForm()
+        return render(request, 'timesheets/index.html', {'form': form})
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return render(request, 'timesheets/dashboard.html', {'form': form})
+            return redirect('dashboard')
         else:
             return redirect('index')
     else:
@@ -27,8 +28,10 @@ def userLogout(request):
     return redirect('index')
 
 def dashboard(request):
-    return render(request, 'timesheets/dashboard.html', '')
-
+    if request.user.is_authenticated:
+        return render(request, 'timesheets/dashboard.html', '')
+    else:
+        return redirect('index')
 
 # This function-based view handles the requests to the root URL /. See
 # urls.py for the mapping.
