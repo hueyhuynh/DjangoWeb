@@ -1,0 +1,19 @@
+
+
+#bootstrap-override{
+	background-color: transparent;
+}
+
+.title{
+	color: white;
+}
+.subtitle{
+	color: white;
+}
+.container-fluid.main{
+/*	background-color: transparent;*/
+
+}
+
+.row{
+	text-align: center;}
