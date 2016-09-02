@@ -8,8 +8,6 @@ from .forms import RegistrationForm
 def index(request):
 #   template = loader.get_template('timesheets/index.html')
     if request.method == 'POST':
-        form = UserForm()
-        return render(request, 'timesheets/index.html', {'form': form})
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -19,8 +17,8 @@ def index(request):
         else:
             return redirect('index')
     else:
-        form = UserForm()
-        return render(request, 'timesheets/index.html', {'form' : form})
+        form = UserForm
+        return render(request, 'timesheets/index.html', {'form': form})
 #    return HttpResponse(template.render('', request))
 
 def userLogout(request):
@@ -28,10 +26,11 @@ def userLogout(request):
     return redirect('index')
 
 def dashboard(request):
-    if request.user.is_authenticated:
+    if request.user.is_active:
         return render(request, 'timesheets/dashboard.html', '')
     else:
-        return redirect('index')
+        return redirect('registration_form')
+
 
 # This function-based view handles the requests to the root URL /. See
 # urls.py for the mapping.
@@ -46,7 +45,8 @@ def registration_form(request):
         if form.is_valid():
             # If form is valid
             # rendering a success template page.
-            return render(request, "timesheets/success.html", '')
+            return HttpResponse('poop')
+            #return render(request, "timesheets/success.html", '')
 
             # This means that the request is a GET request. So we need to
             # create an instance of the RegistrationForm class and render it in
@@ -59,4 +59,4 @@ def registration_form(request):
         # be rendered with the entered data and error messages. Otherwise an empty
         # form will be rendered. Check the comments in the registration_form.html template
         # to understand how this is done.
-    return render(request, "timesheets/registration_form.html", {'form': form})
+        return render(request, "timesheets/registration_form.html", {'form': form})

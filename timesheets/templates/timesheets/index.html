@@ -1,14 +1,7 @@
 <link href="styles.css" rel="stylesheet" />
-<body background="http://k-truong.com/img/background.png">
 <div align="center">
     <h1>Hi</h1>
-    {% if user.is_authenticated %}
-        <form method="POST" action="{% url 'userLogout' %}">
-            <button action="submit">Logout</button>
-               {% csrf_token %}
-        </form>
-    {% else %}
-        <form action="dashboard.html" method="POST">
+        <form action="{% url 'index' %}" method="POST">
         <table>
             {% for field in form %}
                 <tr>
@@ -22,6 +15,5 @@
         <p>New User?<a href="registration_form.html"> Create New Account</a></p>
         {% csrf_token %}
     </form>
-    {% endif %}
 </div>
 </body>
