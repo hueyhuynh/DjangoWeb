@@ -1,0 +1,23 @@
+<html>
+{% load static %}
+<link href="../../static/timesheets/styles.css" rel="stylesheet" />
+<body>
+<div align="center">
+    <h1>TimeSheets</h1>
+        <form action="{% url 'index' %}" method="POST">
+
+            {% for field in form %}
+                <br/>
+                    {{ field.label_tag }}
+                    {{ field }}
+<br/>
+                {% endfor %}
+
+        <input type="submit" value="Login"/>
+        <p>Forgot Your Password? Click <a href="Reset_Password.html">HERE</a></p>
+        <p>New User?<a href="registration_form.html"> Create New Account</a></p>
+        {% csrf_token %}
+    </form>
+</div>
+</body>
+</html>
