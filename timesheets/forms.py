@@ -18,7 +18,7 @@ class RegistrationForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)  # Set the widget to
     # PasswordInput
     password2 = forms.CharField(widget=forms.PasswordInput,
-                                label="Confirm password")  # Set the widget to
+                                label="Confirm Password")  # Set the widget to
     # PasswordInput and
     # set an appropriate
     # label
