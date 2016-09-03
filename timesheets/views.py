@@ -46,7 +46,7 @@ def registration_form(request):
             # If form is valid
             # rendering a success template page.
             return HttpResponse('poop')
-            #return render(request, "timesheets/success.html", '')
+            #return render(request, 'timesheets/success.html')
 
             # This means that the request is a GET request. So we need to
             # create an instance of the RegistrationForm class and render it in
@@ -60,3 +60,4 @@ def registration_form(request):
         # form will be rendered. Check the comments in the registration_form.html template
         # to understand how this is done.
         return render(request, "timesheets/registration_form.html", {'form': form})
+

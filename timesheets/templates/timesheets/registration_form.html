@@ -2,17 +2,22 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
-    <!-- Link to the Bootstrap CSS from a CDN -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"
-          rel="stylesheet">
+    {% load static %}
+<link href="../../static/timesheets/styles.css" rel="stylesheet" />
   </head>
   <body>
-    <div class="container">
-      <div class="header">
-        <h3 class="text-muted">Registration form </h3>
-      </div>
-       <div class="row" style="padding:20px;">
-          <form role="form" action="." method="post">
+<div class="title">
+  <h1>TimeSheets</h1>
+</div>
+
+<!-- Form Module-->
+<div class="module form-module">
+  <div class="block">
+
+  </div>
+    <div class="form">
+        <h2>Register your account</h2>
+         <form action="." method="post">
 	         {% csrf_token %} <!-- CSRF token is rendered by Django in forms to avoid CSRF attacks -->
 
            <!-- If there are non-field errors in the form,
@@ -49,15 +54,13 @@
 		        {% endif %}
             </div>
           {% endfor %}
-    		<input type="submit" class="btn btn-default" value="Submit" />
+    		<button>Submit</button>
 
    	  </form>
-      <br>
-      <p>Already have an account?</p>
-      <form action="." method="get">
-          <input type="submit" class="btn btn-default" value="Back" />
-      </form>
-      </div>
     </div>
+<form action="." method="get">
+    <input type="submit" value="Back">
+    </form>
+</div>
   </body>
 </html>
