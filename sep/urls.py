@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'userLogout', views.userLogout, name='userLogout'),
     url(r'dashboard', views.dashboard, name='dashboard'),
     url(r'registration_form', views.registration_form, name='registration_form'),
+    url(r'success', views.success, name='success'),
 ]

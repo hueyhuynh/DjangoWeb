@@ -45,8 +45,8 @@ def registration_form(request):
         if form.is_valid():
             # If form is valid
             # rendering a success template page.
-            return HttpResponse('poop')
-            #return render(request, 'timesheets/success.html')
+            #return HttpResponse('poop')
+            return redirect('success')
 
             # This means that the request is a GET request. So we need to
             # create an instance of the RegistrationForm class and render it in
@@ -61,3 +61,5 @@ def registration_form(request):
         # to understand how this is done.
         return render(request, "timesheets/registration_form.html", {'form': form})
 
+def success(request):
+    return render(request, 'timesheets/success.html', '')

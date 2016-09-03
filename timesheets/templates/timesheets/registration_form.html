@@ -7,7 +7,7 @@
   </head>
   <body>
 <div class="title">
-  <h1>TimeSheets</h1>
+  <h1><a href=".">TimeSheets</a></h1>
 </div>
 
 <!-- Form Module-->
@@ -17,7 +17,7 @@
   </div>
     <div class="form">
         <h2>Register your account</h2>
-         <form action="." method="post">
+         <form action="{% url 'success' %}" method="post">
 	         {% csrf_token %} <!-- CSRF token is rendered by Django in forms to avoid CSRF attacks -->
 
            <!-- If there are non-field errors in the form,
