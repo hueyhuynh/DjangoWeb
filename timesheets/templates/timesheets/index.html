@@ -17,6 +17,11 @@
   </div>
     <div class="form">
         <h2>Login to your account</h2>
+
+        {% if errors %}
+        <p><font color="red">Your username and password didn't match. Please try again.</font></p>
+        {% endif %}
+
         <form action="{% url 'index' %}" method="POST">
             {% for field in form %}
 
