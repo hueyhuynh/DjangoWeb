@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
+from .setup import DatabaseSetup
+
 
 from timesheets import views
 
@@ -27,3 +29,6 @@ urlpatterns = [
     url(r'registration_form', views.registration_form, name='registration_form'),
     url(r'success', views.success, name='success'),
 ]
+
+print('Running setup.DatabaseSetup()')
+dbs = DatabaseSetup()
