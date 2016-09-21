@@ -20,4 +20,5 @@ class Timesheet(models.Model):
         null=True,
         limit_choices_to={'groups__name': "managers"},
         related_name='manager_that_approved_timesheet',
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE
+        )
