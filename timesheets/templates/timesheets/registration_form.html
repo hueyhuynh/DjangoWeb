@@ -17,7 +17,7 @@
   </div>
     <div class="form">
         <h2>Register your account</h2>
-         <form action="{% url 'success' %}" method="post">
+         <form action="{% url 'registration_form' %}" method="post">
 	         {% csrf_token %} <!-- CSRF token is rendered by Django in forms to avoid CSRF attacks -->
 
            <!-- If there are non-field errors in the form,
@@ -26,7 +26,7 @@
            {% if form.non_field_errors %}
             <p class="error">
 		          {% for error in form.non_field_errors %}
-		            {{ error }}
+		            <font color="red">{{ error }}</font>
 		          {% endfor %}
             </p>
            {% endif %}
@@ -48,7 +48,7 @@
 		        {% if field.errors %}
 		          <p class="error">
 		          {% for error in field.errors %}
-		            {{ error }}
+		            <font color="red">{{ error }}</font>
 		          {% endfor %}
 		          </p>
 		        {% endif %}

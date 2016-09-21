@@ -4,9 +4,18 @@ from django.template import loader
 from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegistrationForm
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django.template import RequestContext
+
 
 def index(request):
-#   template = loader.get_template('timesheets/index.html')
+    #   template = loader.get_template('timesheets/index.html')
+    form = UserForm()
+    errors = False
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -15,15 +24,18 @@ def index(request):
             login(request, user)
             return redirect('dashboard')
         else:
-            return redirect('index')
+            errors = True
+            return render(request, 'timesheets/index.html', {'form': form, "errors": errors})
     else:
-        form = UserForm
-        return render(request, 'timesheets/index.html', {'form': form})
-#    return HttpResponse(template.render('', request))
+        return render(request, 'timesheets/index.html', {'form': form, "errors": errors})
+
+
+# return HttpResponse(template.render('', request))
 
 def userLogout(request):
     logout(request)
     return redirect('index')
+
 
 def dashboard(request):
     if request.user.is_active:
@@ -40,26 +52,24 @@ def registration_form(request):
     if request.method == 'POST':
         # Create a RegistrationForm instance with the submitted data
         form = RegistrationForm(request.POST)
-        # returns True if it is valid and
-        # False if it is invalid.
         if form.is_valid():
-            # If form is valid
-            # rendering a success template page.
-            #return HttpResponse('poop')
-            return redirect('success')
-
-            # This means that the request is a GET request. So we need to
-            # create an instance of the RegistrationForm class and render it in
-            # the template
+            # creating user object
+            user = User.objects.create_user(
+                first_name=form.cleaned_data['name'],
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password'],
+                email=form.cleaned_data['email']
+            )
+            return HttpResponseRedirect('success')
     else:
         form = RegistrationForm()
 
-        # Render the registration form template with a RegistrationForm instance. If the
-        # form was submitted and the data found to be invalid, the template will
-        # be rendered with the entered data and error messages. Otherwise an empty
-        # form will be rendered. Check the comments in the registration_form.html template
-        # to understand how this is done.
-        return render(request, "timesheets/registration_form.html", {'form': form})
+    variables = RequestContext(request, {
+        'form': form
+    })
+
+    return render_to_response('timesheets/registration_form.html', variables, )
+
 
 def success(request):
     return render(request, 'timesheets/success.html', '')
