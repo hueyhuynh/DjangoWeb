@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 class Timesheet(models.Model):
@@ -21,3 +22,7 @@ class Timesheet(models.Model):
         limit_choices_to={'groups__name': "managers"},
         related_name='manager_that_approved_timesheet',
         on_delete=models.CASCADE)
+
+class PasswordReset(models.Model):
+    date_time = models.DateTimeField(default=datetime.now(), blank=True)
+    user = models.OneToOneField(User)
