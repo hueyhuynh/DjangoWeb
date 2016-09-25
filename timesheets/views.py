@@ -73,3 +73,6 @@ def registration_form(request):
 
 def success(request):
     return render(request, 'timesheets/success.html', '')
+
+def new_timesheets(request):
+    return render(request, 'timesheets/new_timesheets.html', '')
