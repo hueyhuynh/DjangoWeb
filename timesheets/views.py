@@ -120,7 +120,7 @@ def password_reset(request):
         form = PasswordResetForm()
 
     variables = RequestContext(request, {
-        'form': form
+    'form': form
     })
 
     return render_to_response('timesheets/password_reset.html', variables,)
