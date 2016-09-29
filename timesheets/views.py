@@ -90,7 +90,7 @@ def registration_form(request):
 def new_timesheets(request):
     if request.method == 'POST':
         form = TimesheetForm(request.POST)
-
+        return render(request, 'timesheets/new_timesheets.html')
 
     else:
         return render(request, 'timesheets/messagebox.html',
