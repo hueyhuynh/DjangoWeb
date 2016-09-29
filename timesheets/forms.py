@@ -52,15 +52,11 @@ class PasswordResetForm(forms.Form):
             raise forms.ValidationError(_("The email does not exists. Please try another one."))
         return self.cleaned_data['email']
 
-class TimesheetForm(forms.Form):
-    name = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)))
-    username = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)),
-                                label=_("Username"), error_messages={
-            'invalid': _("This value must contain only letters, numbers and underscores.")})
-    email = forms.EmailField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Email address"))
-    #class Meta:
-     #   model = Timesheet
-     #   fields = ['total_hours_break', 'submission_date','approval_date','employee','approving_manager']
+class TimesheetForm(forms.ModelForm):
+
+    class Meta:
+        model = Timesheet
+        fields = ['total_hours_break', 'submission_date','approval_date','employee','approving_manager']
 
     #total_hours_worked = forms.IntegerField(widget=forms.NumberInput(attrs=dict(required=True, max_value=24)))
     #total_hours_break = forms.IntegerField(widget=forms.NumberInput(attrs=dict(required=True, max_value=24)))

@@ -90,15 +90,12 @@ def registration_form(request):
 def new_timesheets(request):
     if request.method == 'POST':
         form = TimesheetForm(request.POST)
-        if form.is_valid():
-            return render(request, 'timesheets/messagebox.html',
-                          {'message': 'Form is valid'})
-        else:
-            return render(request, 'timesheets/messagebox.html',
-                          {'message': 'Form is invalid'})
+
+
     else:
         return render(request, 'timesheets/messagebox.html',
                               {'message': 'Fail.'})
+
 def success(request):
     return render(request, 'timesheets/success.html', '')
 
