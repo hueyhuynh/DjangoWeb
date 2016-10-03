@@ -76,7 +76,7 @@ class PasswordChangeForm(forms.Form):
         #    except User.DoesNotExist:
         #       raise forms.ValidationError(_("Either username does not exists or token is wrong."))
 
-    #    return self.cleaned_data['token']
+    # return self.cleaned_data['token']
 
     def clean(self):
         if 'password' in self.cleaned_data and 'password2' in self.cleaned_data:
