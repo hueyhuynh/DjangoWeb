@@ -2,13 +2,10 @@ import re
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-<<<<<<< HEAD
 from timesheets.models import Timesheet
 from django.forms import ModelForm
-=======
 from django.forms import ModelForm
 from models import Timesheet
->>>>>>> 4d505e56e183602f8b08210c36b9f43ff452b5cd
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -98,7 +95,6 @@ class PasswordResetForm(forms.Form):
             raise forms.ValidationError(_("The email does not exists. Please try another one."))
         return self.cleaned_data['email']
 
-<<<<<<< HEAD
 class TimesheetForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)))
     username = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)),
@@ -113,9 +109,7 @@ class TimesheetForm(forms.Form):
     #total_hours_break = forms.IntegerField(widget=forms.NumberInput(attrs=dict(required=True, max_value=24)))
     #submission_date = forms.DateField(widget=forms.DateInput(attrs=dict(required=True)))
     #approval_date = forms.DateField(widget=forms.DateInput(attrs=dict(required=True)))
-=======
 class CreateTimesheetForm(ModelForm):
     class Meta:
         model = Timesheet
         fields = '__all__'
->>>>>>> 4d505e56e183602f8b08210c36b9f43ff452b5cd

@@ -3,11 +3,8 @@ from django.http import HttpResponse
 from django.template import loader
 from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
-<<<<<<< HEAD
 from .forms import RegistrationForm, PasswordResetForm, TimesheetForm
-=======
 from .forms import RegistrationForm, PasswordResetForm, PasswordChangeForm, CreateTimesheetForm
->>>>>>> 4d505e56e183602f8b08210c36b9f43ff452b5cd
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect

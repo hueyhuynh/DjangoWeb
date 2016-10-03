@@ -27,10 +27,7 @@ urlpatterns = [
     url(r'registration_form', views.registration_form, name='registration_form'),
     url(r'success', views.success, name='success'),
     url(r'password_reset', views.password_reset, name='password_reset'),
-<<<<<<< HEAD
     url(r'new_timesheets', views.new_timesheets, name='new_timesheets'),
-=======
     url(r'password_change', views.password_change, name='password_change'),
     url(r'create_timesheet', views.create_timesheet, name='create_timesheet'),
->>>>>>> 4d505e56e183602f8b08210c36b9f43ff452b5cd
 ]
