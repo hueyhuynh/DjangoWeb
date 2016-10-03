@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+{% load static %}
+<link href="../../static/timesheets/styles.css" rel="stylesheet" />
+
+<body>
+
+<div class="title">
+  <h1><a href=".">TimeSheets</a></h1>
+</div>
+
+<!-- Form Module-->
+<div class="module form-module">
+  <div class="block">
+
+  </div>
+    <div class="form">
+        <h2>Create Your TimeSheet</h2>
+        <form action="{% url 'create_timesheet' %}" method="POST">
+            {% for field in form %}
+
+                {{ field.label_tag }}
+                {{ field }}
+<br>
+            {% endfor %}
+        <br>
+        <button>Submit</button>
+            {% csrf_token %}
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

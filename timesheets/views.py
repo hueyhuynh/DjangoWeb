@@ -3,7 +3,11 @@ from django.http import HttpResponse
 from django.template import loader
 from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
+<<<<<<< HEAD
 from .forms import RegistrationForm, PasswordResetForm, TimesheetForm
+=======
+from .forms import RegistrationForm, PasswordResetForm, PasswordChangeForm, CreateTimesheetForm
+>>>>>>> 4d505e56e183602f8b08210c36b9f43ff452b5cd
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
@@ -102,7 +106,37 @@ def new_timesheets(request):
 def success(request):
     return render(request, 'timesheets/success.html', '')
 
+def password_change(request):
 
+    if request.method == 'POST':
+
+        form = PasswordChangeForm(request.POST)
+        if form.is_valid():
+            errors = False
+            try:
+                u = User.objects.get(username__exact=form.cleaned_data['username'])
+                pr = PasswordReset.objects.get_or_create(user=u)[0]
+                t = timezone.make_aware(datetime.now(), timezone.get_default_timezone())
+                if (t - pr.date_time).days > 5:
+                    return render(request, 'timesheets/messagebox.html', {'message': 'Sorry! cannot reset password more than once in a day'})
+                pr.date_time = t
+                pr.save()
+                passwrd = form.cleaned_data['password']
+                u.set_password(passwrd)
+                u.save()
+                message = str("Your new password is: %s" % passwrd)
+                send_mail("Password changed", message, EMAIL_HOST_USER, [u.email])
+            except Exception as e:
+                errors = True
+            return render_to_response('timesheets/success_password_sent.html', {'errors': errors}, )
+    else:
+        form = PasswordChangeForm()
+
+    variables = RequestContext(request, {
+    'form': form
+    })
+
+    return render_to_response('timesheets/password_change.html', variables,)
 def password_reset(request):
     # If the request method is POST, it means that the form has been submitted
     # and we need to validate it.
@@ -131,7 +165,21 @@ def password_reset(request):
         form = PasswordResetForm()
 
     variables = RequestContext(request, {
-    'form': form
+        'form': form
     })
 
     return render_to_response('timesheets/password_reset.html', variables,)
+
+def create_timesheet(request):
+    if request.method == 'POST':
+        form = CreateTimesheetForm(request.POST)
+        if form.is_valid():
+            new_timesheet = form.save()
+    else:
+        form = CreateTimesheetForm()
+
+    variables = RequestContext(request, {
+    'form': form
+    })
+
+    return render_to_response('timesheets/create_timesheet.html', variables,)
