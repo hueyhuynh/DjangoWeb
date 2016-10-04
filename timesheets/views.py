@@ -88,6 +88,7 @@ def registration_form(request):
 def success(request):
     return render(request, 'timesheets/success.html', '')
 
+<<<<<<< HEAD
 def password_change(request):
 
     if request.method == 'POST':
@@ -181,3 +182,7 @@ def create_timesheet(request):
     })
 
     return render_to_response('timesheets/create_timesheet.html', variables,)
+=======
+def new_timesheets(request):
+    return render(request, 'timesheets/new_timesheets.html', '')
+>>>>>>> 07665092d19a63d74360d0e693395bcc2ea5685e

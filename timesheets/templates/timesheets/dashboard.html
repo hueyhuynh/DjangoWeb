@@ -18,11 +18,15 @@
         <h2>Welcome {{ user.get_username }}!</h2>
         <h2> Thank for logging in.</h2>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <form method="POST" action="{% url 'create_timesheet' %}">
         <button action="create_timesheet">Create timesheet</button>
         <h2></h2>
 =======
 >>>>>>> 960145c7ecac2311e4005ace4a94d0a9d78d5421
+=======
+        <div class="cta"><a href="new_timesheets.html"> Create New Timesheet</a></div>
+>>>>>>> 07665092d19a63d74360d0e693395bcc2ea5685e
         <form method="POST" action="{% url 'userLogout' %}">
         <button action="submit">Logout</button>
            {% csrf_token %}
