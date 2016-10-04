@@ -3,6 +3,12 @@ from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime
 
+class TimesheetManager(models.Manager):
+    def create_timesheet(self, total_hours_worked, total_hours_break, submission_date, approval_date, employee, approving_manager):
+        timesheet = self.create(total_hours_worked=total_hours_worked, total_hours_break=total_hours_break,
+                                submission_date=submission_date, approval_date=approval_date,
+                                employee=employee, approving_manager=approving_manager)
+        return timesheet
 
 # Create your models here.
 class Timesheet(models.Model):
@@ -21,6 +27,7 @@ class Timesheet(models.Model):
         null=True,
         related_name='manager_that_approved_timesheet',
         on_delete=models.CASCADE)
+    objects = TimesheetManager()
 
 class PasswordReset(models.Model):
     date_time = models.DateTimeField(default=datetime.now(), blank=True)
