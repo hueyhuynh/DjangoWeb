@@ -4,7 +4,7 @@ from django.template import loader
 from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegistrationForm, PasswordResetForm, PasswordChangeForm, CreateTimesheetForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response
@@ -70,6 +70,7 @@ def registration_form(request):
                     password=password,
                     email=form.cleaned_data['email']
                 )
+                #user.groups.add(Group.objects.get(name='employees'))
                 message = str("Your username is: %s\n" % form.cleaned_data['username'])
                 message += str("Your password is: %s" % password)
                 send_mail("User registration completed", message, EMAIL_HOST_USER, [form.cleaned_data['email']])
@@ -159,7 +160,14 @@ def create_timesheet(request):
     if request.method == 'POST':
         form = CreateTimesheetForm(request.POST)
         if form.is_valid():
-            new_timesheet = form.save()
+            try:
+                #current_user = request.user('name')
+                #ts = Timesheet.objects.get_or_create(employee=current_user)
+                #ts.save()
+                new_timesheet = form.save()
+            except Exception as e:
+                return render(request, 'timesheets/messagebox.html',
+                              {'message': 'Error: Unable to create timesheet.'})
     else:
         form = CreateTimesheetForm()
 
