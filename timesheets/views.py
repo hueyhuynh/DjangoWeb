@@ -3,9 +3,9 @@ from django.http import HttpResponse
 from django.template import loader
 from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegistrationForm, PasswordResetForm, TimesheetForm
+from .forms import RegistrationForm, PasswordResetForm, CreateTimesheetForm
 from .forms import RegistrationForm, PasswordResetForm, PasswordChangeForm, CreateTimesheetForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response
@@ -19,7 +19,6 @@ from django.utils import timezone
 import uuid
 
 from sep.settings import EMAIL_HOST_USER
-
 
 def index(request):
     #   template = loader.get_template('timesheets/index.html')
@@ -38,20 +37,17 @@ def index(request):
     else:
         return render(request, 'timesheets/index.html', {'form': form, "errors": errors})
 
-
 # return HttpResponse(template.render('', request))
 
 def userLogout(request):
     logout(request)
     return redirect('index')
 
-
 def dashboard(request):
     if request.user.is_active:
         return render(request, 'timesheets/dashboard.html', '')
     else:
         return redirect('registration_form')
-
 
 # This function-based view handles the requests to the root URL /. See
 # urls.py for the mapping.
@@ -71,6 +67,7 @@ def registration_form(request):
                     password=password,
                     email=form.cleaned_data['email']
                 )
+                #user.groups.add(Group.objects.get(name='employees'))
                 message = str("Your username is: %s\n" % form.cleaned_data['username'])
                 message += str("Your password is: %s" % password)
                 send_mail("User registration completed", message, EMAIL_HOST_USER, [form.cleaned_data['email']])
@@ -88,18 +85,6 @@ def registration_form(request):
 
     return render_to_response('timesheets/registration_form.html', variables, )
 
-def new_timesheets(request):
-    if request.method == 'POST':
-        form = TimesheetForm(request.POST)
-        if form.is_valid():
-            return render(request, 'timesheets/messagebox.html',
-                          {'message': 'Form is valid'})
-        else:
-            return render(request, 'timesheets/messagebox.html',
-                          {'message': 'Form is invalid'})
-    else:
-        return render(request, 'timesheets/messagebox.html',
-                              {'message': 'Fail.'})
 def success(request):
     return render(request, 'timesheets/success.html', '')
 
@@ -171,7 +156,14 @@ def create_timesheet(request):
     if request.method == 'POST':
         form = CreateTimesheetForm(request.POST)
         if form.is_valid():
-            new_timesheet = form.save()
+            try:
+                #current_user = request.user('name')
+                #ts = Timesheet.objects.get_or_create(employee=current_user)
+                #ts.save()
+                new_timesheet = form.save()
+            except Exception as e:
+                return render(request, 'timesheets/messagebox.html',
+                              {'message': 'Error: Unable to create timesheet.'})
     else:
         form = CreateTimesheetForm()
 
