@@ -21,9 +21,10 @@
         <button action="submit">Logout</button>
            {% csrf_token %}
     </form>
-    </div>
-    <div>
-    <div class="cta"><a href="create_timesheet.html"> Create New TimeSheet</a></div>
+        <form method="POST" action="{% url 'create_timesheet' %}">
+        <button action="submit">Create Timesheet</button>
+           {% csrf_token %}
+    </form>
     </div>
     </div>
 </body>

@@ -125,5 +125,5 @@ STATIC_URL = '/static/'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'njnos8@gmail.com' #Enter email which is used to send email to user's email
-EMAIL_HOST_PASSWORD = 'hiphop12' #Enter your email's password
+EMAIL_HOST_USER = 'enteremail.com' #Enter email which is used to send email to user's email
+EMAIL_HOST_PASSWORD = 'password' #Enter your email's password
