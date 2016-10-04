@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime
 
+
 # Create your models here.
 class Timesheet(models.Model):
     total_hours_worked = models.IntegerField()
