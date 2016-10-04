@@ -98,4 +98,4 @@ class PasswordResetForm(forms.Form):
 class CreateTimesheetForm(ModelForm):
     class Meta:
         model = Timesheet
-        fields = '__all__'
+        fields = 'total_hours_worked', 'total_hours_break', 'submission_date'

@@ -157,10 +157,18 @@ def create_timesheet(request):
         form = CreateTimesheetForm(request.POST)
         if form.is_valid():
             try:
-                #current_user = request.user('name')
+                #current_user = request.user['name']
                 #ts = Timesheet.objects.get_or_create(employee=current_user)
                 #ts.save()
-                new_timesheet = form.save()
+                timesheet = Timesheet.objects.create_timesheet(
+                    total_hours_worked=form.cleaned_data['total_hours_worked'],
+                    total_hours_break=form.cleaned_data['total_hours_break'],
+                    submission_date=form.cleaned_data['submission_date'],
+                    #employee=current_user
+                )
+                timesheet.save()
+                return render(request, 'timesheets/messagebox.html',
+                              {'message': 'Timesheet created.'})
             except Exception as e:
                 return render(request, 'timesheets/messagebox.html',
                               {'message': 'Error: Unable to create timesheet.'})
@@ -168,7 +176,7 @@ def create_timesheet(request):
         form = CreateTimesheetForm()
 
     variables = RequestContext(request, {
-    'form': form
+        'form': form
     })
 
     return render_to_response('timesheets/create_timesheet.html', variables,)
