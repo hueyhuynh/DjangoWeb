@@ -20,7 +20,6 @@ import uuid
 
 from sep.settings import EMAIL_HOST_USER
 
-
 def index(request):
     #   template = loader.get_template('timesheets/index.html')
     form = UserForm()
@@ -38,20 +37,17 @@ def index(request):
     else:
         return render(request, 'timesheets/index.html', {'form': form, "errors": errors})
 
-
 # return HttpResponse(template.render('', request))
 
 def userLogout(request):
     logout(request)
     return redirect('index')
 
-
 def dashboard(request):
     if request.user.is_active:
         return render(request, 'timesheets/dashboard.html', '')
     else:
         return redirect('registration_form')
-
 
 # This function-based view handles the requests to the root URL /. See
 # urls.py for the mapping.
@@ -89,18 +85,6 @@ def registration_form(request):
 
     return render_to_response('timesheets/registration_form.html', variables, )
 
-def new_timesheets(request):
-    if request.method == 'POST':
-        form = TimesheetForm(request.POST)
-        if form.is_valid():
-            return render(request, 'timesheets/messagebox.html',
-                          {'message': 'Form is valid'})
-        else:
-            return render(request, 'timesheets/messagebox.html',
-                          {'message': 'Form is invalid'})
-    else:
-        return render(request, 'timesheets/messagebox.html',
-                              {'message': 'Fail.'})
 def success(request):
     return render(request, 'timesheets/success.html', '')
 
