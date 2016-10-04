@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime
 
+# Create timesheet object
 class TimesheetManager(models.Manager):
     def create_timesheet(self, total_hours_worked, total_hours_break, submission_date, approval_date, employee, approving_manager):
         timesheet = self.create(total_hours_worked=total_hours_worked, total_hours_break=total_hours_break,
