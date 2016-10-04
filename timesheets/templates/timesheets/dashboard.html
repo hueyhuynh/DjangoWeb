@@ -13,23 +13,18 @@
 <!-- Form Module-->
 <div class="module form-module">
   <div class="block">
-
   </div>
     <div class="form">
         <h2>Welcome {{ user.get_username }}!</h2>
-<<<<<<< HEAD
         <h2> Thank for logging in.</h2>
-        <form method="POST" action="{% url 'new_timesheets' %}">
-        <button action="new_timesheets">Create timesheet</button>
-=======
-        <h2></h2>
->>>>>>> 4d505e56e183602f8b08210c36b9f43ff452b5cd
         <form method="POST" action="{% url 'userLogout' %}">
         <button action="submit">Logout</button>
            {% csrf_token %}
     </form>
     </div>
+    <div>
     <div class="cta"><a href="create_timesheet.html"> Create New TimeSheet</a></div>
-</div>
+    </div>
+    </div>
 </body>
 </html>
