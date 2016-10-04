@@ -26,11 +26,8 @@ urlpatterns = [
     url(r'dashboard', views.dashboard, name='dashboard'),
     url(r'registration_form', views.registration_form, name='registration_form'),
     url(r'success', views.success, name='success'),
-<<<<<<< HEAD
     url(r'password_reset', views.password_reset, name='password_reset'),
     url(r'password_change', views.password_change, name='password_change'),
     url(r'create_timesheet', views.create_timesheet, name='create_timesheet'),
-=======
     url(r'new_timesheets', views.new_timesheets, name='new_timesheets'),
->>>>>>> 07665092d19a63d74360d0e693395bcc2ea5685e
 ]

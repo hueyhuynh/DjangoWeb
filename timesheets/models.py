@@ -20,13 +20,10 @@ class Timesheet(models.Model):
         User,
         null=True,
         related_name='manager_that_approved_timesheet',
-<<<<<<< HEAD
         on_delete=models.CASCADE)
 
 class PasswordReset(models.Model):
     date_time = models.DateTimeField(default=datetime.now(), blank=True)
     user = models.OneToOneField(User)
-=======
-        on_delete=models.CASCADE
-        )
->>>>>>> 07665092d19a63d74360d0e693395bcc2ea5685e
+    on_delete=models.CASCADE
+

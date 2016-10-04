@@ -23,9 +23,6 @@ class Migration(migrations.Migration):
                 ('approval_date', models.DateTimeField(verbose_name='Date the timesheet was approved by the Approving Manager')),
             ],
         ),
-<<<<<<< HEAD
     ]
 
-=======
-    ]
->>>>>>> 07665092d19a63d74360d0e693395bcc2ea5685e
+    
