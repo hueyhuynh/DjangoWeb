@@ -29,5 +29,4 @@ urlpatterns = [
     url(r'password_reset', views.password_reset, name='password_reset'),
     url(r'password_change', views.password_change, name='password_change'),
     url(r'create_timesheet', views.create_timesheet, name='create_timesheet'),
-    url(r'new_timesheets', views.new_timesheets, name='new_timesheets'),
 ]
