@@ -161,40 +161,21 @@ def create_timesheet(request):
         form = CreateTimesheetForm(request.POST)
         if form.is_valid():
             try:
-                current_user = request.user['name']
-
-                #Testing code to get timesheet object. Testing on Huey-create_timesheet branch of master
-
-                #ts = Timesheet.objects.get_or_create(employee=current_user)
-                #ts.save()
-                #timesheet = Timesheet.objects.create_timesheet(
-                    #total_hours_worked=form.cleaned_data['total_hours_worked'],
-                    #total_hours_break=form.cleaned_data['total_hours_break'],
-                    #submission_date=form.cleaned_data['submission_date'],
-                    #employee=current_user
-                #)
-
-                total_hours_worked = request.POST['total_hours_worked']
-                total_hours_break = request.POST['total_hours_break']
-                submission_date = request.POST['submission_date']
-                Timesheet.objects.create(total_hours_worked = total_hours_worked, total_hours_break = total_hours_break,
-                submission_date = submission_date, approval_date = submission_date,
-                approving_manager = current_user,
-                employee = current_user)
+                timesheet = form.save(commit=False)
+                timesheet.employee = request.user
+                timesheet.submission_date = timezone.now()
+                timesheet.save()
 
                 return render(request, 'timesheets/messagebox.html',
                               {'message': 'Timesheet created.'})
             except Exception as e:
+                print(e) # print the error to Django console
                 return render(request, 'timesheets/messagebox.html',
                               {'message': 'Error: Unable to create timesheet.'})
     else:
         form = CreateTimesheetForm()
 
-    variables = RequestContext(request, {
-        'form': form
-    })
-
-    return render_to_response('timesheets/create_timesheet.html', variables,)
+    return render(request, 'timesheets/create_timesheet.html', {'form': form})
 
 
 
