@@ -175,8 +175,6 @@ def create_timesheet(request):
                 timesheet.employee = request.user
                 timesheet.submission_date = timezone.now()
                 timesheet.save()
-
-
                 return render(request, 'timesheets/messagebox.html',
                               {'message': 'Timesheet created.'})
             except Exception as e:
