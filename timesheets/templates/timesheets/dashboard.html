@@ -17,9 +17,7 @@
     <div class="form">
         <h2>Welcome {{ user.get_username }}!</h2>
         <h2> Thank for logging in.</h2>
-        {% if timesheet_id %}
-<input type="hidden" value='{{ timesheet_id }}' id='timesheet_id' name='timesheet_id'/>
-{% endif %}
+
         <form method="POST" action="{% url 'userLogout' %}">
             <button action="submit">Logout</button>
            {% csrf_token %}
