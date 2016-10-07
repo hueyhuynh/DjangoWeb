@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.template import loader
+from django.views.generic.edit import CreateView
 from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegistrationForm, PasswordResetForm, CreateTimesheetForm
@@ -15,7 +14,7 @@ from django.core.mail import send_mail
 from models import *
 from datetime import datetime
 from django.utils import timezone
-
+from django.views.generic.list import ListView
 import uuid
 
 from sep.settings import EMAIL_HOST_USER
@@ -28,7 +27,7 @@ def index(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
-        if user is not None:
+        if user is not None & request.user.is_active:
             login(request, user)
             return redirect('dashboard')
         else:
@@ -44,10 +43,31 @@ def userLogout(request):
     return redirect('index')
 
 def dashboard(request):
-    if request.user.is_active:
-        return render(request, 'timesheets/dashboard.html', '')
+    user = User.objects.get(username=request.user.username)
+    if request.method == "POST":
+        timesheet_id = request.POST.get('timesheet_id')  # You are getting passed article id
+        ts = Timesheet.objects.get(pk=timesheet_id)  # You are getting instance by id
+        ts_form = CreateTimesheetForm(request.POST, instance=ts)
+        ts_form.save()
+        #if request.user.is_active:
+            #return render(request, 'timesheets/dashboard.html', '')
+
+        #else:
+            #return redirect('registration_form')
+
     else:
-        return redirect('registration_form')
+        ts = Timesheet.objects.get(user=user).latest("id")
+        ts_form = CreateTimesheetForm(instance=ts)
+        timesheet_id = ts.id
+
+    return render(request,
+        "timesheets/dashboard.html",
+        {
+            "ts_form": ts_form,
+            "timesheet_id": timesheet_id,
+        }
+
+    )
 
 # This function-based view handles the requests to the root URL /. See
 # urls.py for the mapping.
@@ -176,7 +196,7 @@ def create_timesheet(request):
                 timesheet.submission_date = timezone.now()
                 timesheet.save()
                 return render(request, 'timesheets/messagebox.html',
-                              {'message': 'Timesheet created.'})
+                              {'message': 'Error: Timesheet Created.'})
             except Exception as e:
                 print(e) # print the error to Django console
                 return render(request, 'timesheets/messagebox.html',
@@ -185,6 +205,4 @@ def create_timesheet(request):
         form = CreateTimesheetForm()
 
     return render(request, 'timesheets/create_timesheet.html', {'form': form})
-
-
 

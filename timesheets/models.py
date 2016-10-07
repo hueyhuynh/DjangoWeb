@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime
+from django.urls import reverse
 
 # Create timesheet object
 #class TimesheetManager(models.Manager):
@@ -33,6 +34,7 @@ class Timesheet(models.Model):
     )
     def __str__(self):
         return format(self.employee)
+
     #objects = TimesheetManager()
 
 class PasswordReset(models.Model):

@@ -98,3 +98,4 @@ class CreateTimesheetForm(ModelForm):
     class Meta:
         model = Timesheet
         fields = 'total_hours_worked', 'total_hours_break'
+
