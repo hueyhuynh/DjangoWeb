@@ -27,9 +27,9 @@ def index(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
-        if user is not None & request.user.is_active:
+        if request.user.is_active:
             login(request, user)
-            return redirect('dashboard')
+            return render('dashboard')
         else:
             errors = True
             return render(request, 'timesheets/index.html', {'form': form, "errors": errors})
@@ -43,7 +43,6 @@ def userLogout(request):
     return redirect('index')
 
 def dashboard(request):
-    user = User.objects.get(username=request.user.username)
     if request.method == "POST":
         timesheet_id = request.POST.get('timesheet_id')  # You are getting passed article id
         ts = Timesheet.objects.get(pk=timesheet_id)  # You are getting instance by id
@@ -56,7 +55,7 @@ def dashboard(request):
             #return redirect('registration_form')
 
     else:
-        ts = Timesheet.objects.get(user=user).latest("id")
+        ts = Timesheet.objects.get(employee=request.user).latest("id")
         ts_form = CreateTimesheetForm(instance=ts)
         timesheet_id = ts.id
 
