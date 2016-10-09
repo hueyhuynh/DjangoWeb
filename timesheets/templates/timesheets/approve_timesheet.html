@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+{% load static %}
+<link href="../../static/timesheets/styles_wide.css" rel="stylesheet" />
+
+<body>
+
+<div class="title">
+  <h1><a href="dashboard.html">TimeSheets</a></h1>
+</div>
+
+<!-- Form Module-->
+<div class="module form-module">
+  <div class="block">
+
+  </div>
+  <div class="form">
+        <h2>Approve TimeSheets</h2>
+    <form method="POST" class="post-form">
+        {% csrf_token %}
+        <table>
+            {% for timesheet in timesheets %}
+            <tr>
+                <td>{{ timesheet.employee }}</td>
+                <td>{{ timesheet.submission_date }}</td>
+                <td><input type="submit" value="Approve" name={{ timesheet.id }}></td>
+            </tr>
+            {% endfor %}
+        <table>
+    </form>
+  </div>
+
+<div class="cta"><a href="dashboard.html">Back to Dashboard</a></div>
+</div>
+</body>
+</html>
