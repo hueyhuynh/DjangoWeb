@@ -28,10 +28,6 @@
         </form>
 
         {% if request.user|has_group:"managers" %}
-            <!--<form method="POST" action="{% url 'approve_timesheet' %}">
-                <button action="submit">Approve Timesheets</button>
-                {% csrf_token %}
-            </form>-->
             <a href="{% url 'approve_timesheet' %}"><button>Approve Timesheets</button></a>
         {% endif %}
     </div>
