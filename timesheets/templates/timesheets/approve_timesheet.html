@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {% load static %}
-<link href="../../static/timesheets/styles.css" rel="stylesheet" />
+<link href="../../static/timesheets/styles_wide.css" rel="stylesheet" />
 
 <body>
 
@@ -15,10 +15,22 @@
   <div class="block">
 
   </div>
-  {% for timesheet in timesheets %}
-    {{ timesheet }}
-    {{ timesheet.submission_date }}
-  {% endfor %}
+  <div class="form">
+        <h2>Approve TimeSheets</h2>
+    <form method="POST" class="post-form">
+        {% csrf_token %}
+        <table>
+            {% for timesheet in timesheets %}
+            <tr>
+                <td>{{ timesheet.employee }}</td>
+                <td>{{ timesheet.submission_date }}</td>
+                <td><input type="submit" value="Approve" name={{ timesheet.id }}></td>
+                <!--<td><button type="submit" class="save btn btn-default">Approve</button><td>-->
+            </tr>
+            {% endfor %}
+        <table>
+    </form>
+  </div>
     <!--<div class="form">
         <h2>Create Your TimeSheet</h2>
         <form method="POST" class="post-form">{% csrf_token %}
