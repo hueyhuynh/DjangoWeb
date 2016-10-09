@@ -45,15 +45,9 @@ def userLogout(request):
 
 def dashboard(request):
     if request.user.is_active:
-        if request.user.groups.filter(name="managers").exists():
-            return render(request, 'timesheets/manager_dashboard.html')
-        else:
-            return render(request, 'timesheets/dashboard.html', '')
+        return render(request, 'timesheets/dashboard.html', '')
     else:
         return redirect('registration_form')
-
-def manager_dashboard(request):
-    return render(request, 'timesheets/manager_dashboard.html')
 
 # This function-based view handles the requests to the root URL /. See
 # urls.py for the mapping.
@@ -184,19 +178,18 @@ def create_timesheet(request):
     return render(request, 'timesheets/create_timesheet.html', {'form': form})
 
 def approve_timesheet(request):
-    if form.is_valid():
-        if request.method == 'POST':
-            results = request.POST.dict()
-            try:
-                approved_timesheet_id = int(results.keys()[results.values().index(u'Approve')])
-                manager = request.user
-                timesheet = Timesheet.objects.get(pk=approved_timesheet_id)
-                if manager.groups.filter(name="managers").exists():
-                    timesheet.approving_manager = manager
-                    timesheet.save()
-            except Exception as e:
-                print(e) # Print the error to Django console
-                return render(request, 'timesheets/messagebox.html',
-                                {'message': 'Error: Unable to approve timesheet.'})
+    if request.method == 'POST':
+        results = request.POST.dict()
+        try:
+            approved_timesheet_id = int(results.keys()[results.values().index(u'Approve')])
+            manager = request.user
+            timesheet = Timesheet.objects.get(pk=approved_timesheet_id)
+            if manager.groups.filter(name="managers").exists():
+                timesheet.approving_manager = manager
+                timesheet.save()
+        except Exception as e:
+            print(e) # Print the error to Django console
+            return render(request, 'timesheets/messagebox.html',
+                              {'message': 'Error: Unable to approve timesheet.'})
 
     return render(request, 'timesheets/approve_timesheet.html', {'timesheets': Timesheet.objects.filter(approving_manager__isnull=True)})
