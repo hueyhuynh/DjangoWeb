@@ -25,19 +25,12 @@
                 <td>{{ timesheet.employee }}</td>
                 <td>{{ timesheet.submission_date }}</td>
                 <td><input type="submit" value="Approve" name={{ timesheet.id }}></td>
-                <!--<td><button type="submit" class="save btn btn-default">Approve</button><td>-->
             </tr>
             {% endfor %}
         <table>
     </form>
   </div>
-    <!--<div class="form">
-        <h2>Create Your TimeSheet</h2>
-        <form method="POST" class="post-form">{% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="save btn btn-default">Save</button>
-        </form>
-    </div>-->
+
 <div class="cta"><a href="dashboard.html">Back to Dashboard</a></div>
 </div>
 </body>

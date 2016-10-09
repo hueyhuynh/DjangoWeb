@@ -180,21 +180,16 @@ def create_timesheet(request):
 def approve_timesheet(request):
     if request.method == 'POST':
         results = request.POST.dict()
-        print(results.keys()[results.values().index(u'Approve')])
-    #     form = CreateTimesheetForm(request.POST)
-    #     if form.is_valid():
-    #         try:
-    #             timesheet = form.save(commit=False)
-    #             timesheet.employee = request.user
-    #             timesheet.submission_date = timezone.now()
-    #             timesheet.save()
+        try:
+            approved_timesheet_id = int(results.keys()[results.values().index(u'Approve')])
+            manager = request.user
+            timesheet = Timesheet.objects.get(pk=approved_timesheet_id)
+            if manager.groups.filter(name="managers").exists():
+                timesheet.approving_manager = manager
+                timesheet.save()
+        except Exception as e:
+            print(e) # Print the error to Django console
+            return render(request, 'timesheets/messagebox.html',
+                              {'message': 'Error: Unable to approve timesheet.'})
 
-    #             return render(request, 'timesheets/messagebox.html',
-    #                           {'message': 'Timesheet created.'})
-    #         except Exception as e:
-    #             print(e) # print the error to Django console
-    #             return render(request, 'timesheets/messagebox.html',
-    #                           {'message': 'Error: Unable to create timesheet.'})
-
-    # return render(request, 'timesheets/approve_timesheet.html', {'form': form})
-    return render(request, 'timesheets/approve_timesheet.html', {'timesheets': Timesheet.objects.all()})
+    return render(request, 'timesheets/approve_timesheet.html', {'timesheets': Timesheet.objects.filter(approving_manager__isnull=True)})
