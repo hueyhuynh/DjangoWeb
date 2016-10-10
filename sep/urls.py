@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'password_reset', views.password_reset, name='password_reset'),
     url(r'password_change', views.password_change, name='password_change'),
     url(r'create_timesheet', views.create_timesheet, name='create_timesheet'),
-
+    url(r'^(?P<id>\d+)/$', views.timesheet_detail, name='detail'),
     #url(r'timesheet_view', views.timesheet_view, name='timesheet_view'),
 
     url(r'approve_timesheet', views.approve_timesheet, name='approve_timesheet')

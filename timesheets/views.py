@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import CreateView
 from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
@@ -27,14 +27,17 @@ def index(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
-        if user is not None:
+
+        if user.is_authenticated:
+
             login(request, user)
             return redirect('dashboard')
+
         else:
             errors = True
             return render(request, 'timesheets/index.html', {'form': form, "errors": errors})
     else:
-        return render(request, 'timesheets/index.html', {'form': form, "errors": errors})
+        return render(request, 'timesheets/index.html', {'form': form})
 
 # return HttpResponse(template.render('', request))
 
@@ -43,16 +46,35 @@ def userLogout(request):
     return redirect('index')
 
 def dashboard(request):
+
+    user_in_group = Group.objects.get(name='employees').user_set.all()
+    if request.user not in user_in_group:
+        return render(request, 'timesheets/dashboard.html', {'user': user_in_group})
+    else:
+        queryset = Timesheet.objects.all()
+        context = {
+            "object_list": queryset,
+            "employee": "List",
+        }
+        return render(request, 'timesheets/dashboard.html', context)
+
+def timesheet_detail(request, id=None):
+    instance = get_object_or_404(Timesheet, id=id)
+    context = {
+        "employee": "Detail",
+        "instance": instance,
+    }
+    return render(request,"timesheets/timesheet_detail.html", context)
     #if request.method == "POST":
         #timesheet_id = request.POST.get('timesheet_id')  # You are getting passed article id
         #ts = Timesheet.objects.get(pk=timesheet_id)  # You are getting instance by id
         #ts_form = CreateTimesheetForm(request.POST, instance=ts)
         #ts_form.save()
-    if request.user.is_active:
-        return render(request, 'timesheets/dashboard.html', '')
+    #if request.user.is_active:
+        #return render(request, 'timesheets/dashboard.html', '')
 
-    else:
-        return redirect('registration_form')
+    #else:
+        #return redirect('registration_form')
 
     #else:
         #ts = Timesheet.objects.get(employee=request.user).latest("id")
@@ -67,6 +89,7 @@ def dashboard(request):
         #}
 
     #)
+
 
 # This function-based view handles the requests to the root URL /. See
 # urls.py for the mapping.

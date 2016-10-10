@@ -21,11 +21,20 @@
         {% csrf_token %}
         <table>
             {% for timesheet in timesheets %}
-            <tr>
-                <td>{{ timesheet.employee }}</td>
-                <td>{{ timesheet.submission_date }}</td>
+                <tr>
+                    <td>Employee's name: {{ timesheet.employee }}</td>
+                </tr>
+                <tr>
+                    <td>Submission date: {{ timesheet.submission_date }}</td>
+                </tr>
+                <tr>
+                    <td> Total hours break: {{ timesheet.total_hours_break }}</td>
+                </tr>
+                <tr>
+                    <td>Totel hours worked: {{ timesheet.total_hours_worked }}</td>
+                </tr>
                 <td><input type="submit" value="Approve" name={{ timesheet.id }}></td>
-            </tr>
+
             {% endfor %}
         </table>
     </form>

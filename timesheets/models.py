@@ -32,9 +32,15 @@ class Timesheet(models.Model):
         related_name='manager_that_approved_timesheet',
         on_delete=models.CASCADE
     )
+
+    def __unicode__(self):
+        return self.employee
+
     def __str__(self):
         return format(self.employee)
 
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={"id": self.id})
     #objects = TimesheetManager()
 
 class PasswordReset(models.Model):

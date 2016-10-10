@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+{% load static %}
+<link href="../../static/timesheets/styles_wide.css" rel="stylesheet" />
+
+<body>
+
+<div class="title">
+  <h1><a href="dashboard.html">TimeSheets</a></h1>
+</div>
+
+<!-- Form Module-->
+<div class="module form-module">
+  <div class="block">
+
+  </div>
+  <div class="form" align="center">
+      <h2> Timesheet Detail</h2>
+
+      <p>Employee name: {{ instance.employee }}</p><br/>
+      <p>Submission date: {{ instance.submission_date }}</p><br/>
+      <p>Total hours worked: {{ instance.total_hours_worked }}</p><br/>
+      <p>Total hours break: {{ instance.total_hours_break }}</p><br/>
+      <p>Timesheet id: {{ instance.id }}</p><br/>
+
+  </div>
+
+<div class="cta"><a href="dashboard.html">Back to Dashboard</a></div>
+</div>
+</body>
+</html>
