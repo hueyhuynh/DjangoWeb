@@ -13,20 +13,16 @@
 <!-- Form Module-->
 <div class="module form-module">
   <div class="block">
+
   </div>
     <div class="form">
-        <h2>Welcome {{ user.get_username }}!</h2>
-        <h2> Thank for logging in.</h2>
-
-        <form method="POST" action="{% url 'userLogout' %}">
-            <button action="submit">Logout</button>
-           {% csrf_token %}
-        </form>
-        <form method="POST" action="{% url 'create_timesheet' %}">
-            <button action="submit">Create Timesheet</button>
-           {% csrf_token %}
+        <h2>Create Your TimeSheet</h2>
+        <form method="POST" class="post-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Save</button>
         </form>
     </div>
+<div class="cta"><a href="dashboard.html">Back to Dashboard</a></div>
 </div>
 </body>
 </html>
