@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {% load static %}
-<link href="../../static/timesheets/styles_wide.css" rel="stylesheet" />
+<link href="../../static/timesheets/styles.css" rel="stylesheet" />
 
 <body>
 
@@ -17,12 +17,15 @@
   </div>
   <div class="form" align="center">
       <h2> Timesheet Detail</h2>
+      <table>
+          <tr><td>Employee name: </td><td> {{ instance.employee }}</td></tr>
+          <tr><td>Submission date: </td><td> {{ instance.submission_date }}</td></tr>
+          <tr><td>Total hours worked: </td><td> {{ instance.total_hours_worked }}</td></tr>
+          <tr><td>Total hours break: </td><td>{{ instance.total_hours_break }}</td></tr>
+          <tr><td>Approved Manager </td><td>{{ instance.approving_manager }}</td></tr>
+          <tr><td>Timesheet id: </td><td>{{ instance.id }}</td></tr>
+      </table>
 
-      <p>Employee name: {{ instance.employee }}</p><br/>
-      <p>Submission date: {{ instance.submission_date }}</p><br/>
-      <p>Total hours worked: {{ instance.total_hours_worked }}</p><br/>
-      <p>Total hours break: {{ instance.total_hours_break }}</p><br/>
-      <p>Timesheet id: {{ instance.id }}</p><br/>
 
   </div>
 

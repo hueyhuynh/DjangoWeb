@@ -4,13 +4,6 @@ from django.db import models
 from datetime import datetime
 from django.urls import reverse
 
-# Create timesheet object
-#class TimesheetManager(models.Manager):
-    #def create_timesheet(self, total_hours_worked, total_hours_break, submission_date, approval_date, employee, approving_manager):
-        #timesheet = self.create(total_hours_worked=total_hours_worked, total_hours_break=total_hours_break,
-                                #submission_date=submission_date, approval_date=approval_date,
-                                #employee=employee, approving_manager=approving_manager)
-        #return timesheet
 
 # Create your models here.
 class Timesheet(models.Model):
@@ -33,15 +26,11 @@ class Timesheet(models.Model):
         on_delete=models.CASCADE
     )
 
-    def __unicode__(self):
-        return self.employee
-
     def __str__(self):
         return format(self.employee)
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={"id": self.id})
-    #objects = TimesheetManager()
 
 class PasswordReset(models.Model):
     date_time = models.DateTimeField(default=datetime.now(), blank=True)

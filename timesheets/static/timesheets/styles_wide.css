@@ -80,12 +80,13 @@ body {
 .form-module button {
   cursor: pointer;
   background: #33b5e5;
-  width: 100%;
-  border: 0;
+  width: 30%;
+  border: 1px solid black;
   padding: 10px 15px;
   color: #ffffff;
   -webkit-transition: 0.3s ease;
   transition: 0.3s ease;
+  margin: 1px;
 }
 .form-module button:hover {
   background: #178ab4;

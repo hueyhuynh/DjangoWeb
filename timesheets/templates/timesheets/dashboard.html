@@ -3,7 +3,7 @@
 <html>
 {% load static %}
 {% load timesheets_extras %}
-<link href="../../static/timesheets/styles_wide.css" rel="stylesheet" />
+<link href="../../static/timesheets/styles.css" rel="stylesheet" />
 
 <body>
 
@@ -17,36 +17,64 @@
   </div>
     <div class="form">
         <h2>Welcome {{ request.user }}!</h2>
-        <h2> Thank for logging in.</h2>
+
+
         {% if request.user|has_group:"managers" %}
-            {% for user_in_group in user %}
-                <li><a href="{% url 'approve_timesheet' %}"> {{ user_in_group.username }}</a></li>
-                <br>
-            {% endfor %}
+            <h2> Successful Approved Timesheets List </h2>
+            <table>
+                {% for timesheet in timesheets %}
+                    {% if timesheet.approving_manager == request.user %}
+
+                        <tr>
+                            <td>Employee's name: </td><td>{{ timesheet.employee }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Submission date: </td><td>{{ timesheet.submission_date }}</td>
+                        </tr>
+
+                        <tr>
+                            <td> Total hours break: </td><td>{{ timesheet.total_hours_break }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Totol hours worked: </td><td>{{ timesheet.total_hours_worked }}</td>
+                        </tr>
+
+                        <tr><td><input type="submit" value="Approved" name={{ timesheet.id }}></td></tr>
+
+                    {% endif %}
+              {% endfor %}
+
+          </table>
+             <a href="{% url 'approve_timesheet' %}"><button>Approve Timesheets</button></a>
+
         {% endif %}
         {% if request.user|has_group:"employees" %}
+            <h2> Timesheets Submitted </h2>
             {% for obj in object_list %}
                 {% if obj.employee == request.user %}
-                    <br/>
-                    {% url "detail" id=obj.id %}
-                    <a href="{{ obj.get_absolute_url }}"> {{ obj.employee }}</a>
-                    <br/>
-                    {{ obj.submission_date }}<br/>
 
+                    <table>
+                        <tr>
+                            <td>{% url "detail" id=obj.id %}</td>
+                            <td><a href="{{ obj.get_absolute_url }}"> {{ obj.employee }}</a></td>
+                            <td>{{ obj.submission_date }}</td>
+
+                        </tr>
+                    </table>
+                    <br/>
                 {% endif %}
             {% endfor %}
         {% endif %}
-
-        <form method="POST" action="{% url 'userLogout' %}">
-            <button action="submit">Logout</button>
-           {% csrf_token %}
-        </form>
         <form method="POST" action="{% url 'create_timesheet' %}">
             <button action="submit">Create Timesheet</button>
            {% csrf_token %}
         </form>
-
-
+        <form method="POST" action="{% url 'userLogout' %}">
+            <button action="submit">Logout</button>
+           {% csrf_token %}
+        </form>
     </div>
 </div>
 </body>

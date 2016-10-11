@@ -1,20 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic.edit import CreateView
 from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegistrationForm, PasswordResetForm, CreateTimesheetForm
 from .forms import RegistrationForm, PasswordResetForm, PasswordChangeForm, CreateTimesheetForm
 from django.contrib.auth.models import User, Group
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.core.mail import send_mail
 from models import *
 from datetime import datetime
 from django.utils import timezone
-from django.views.generic.list import ListView
+
 import uuid
 
 from sep.settings import EMAIL_HOST_USER
@@ -27,29 +22,31 @@ def index(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_authenticated:
 
-        if user.is_authenticated:
-
-            login(request, user)
-            return redirect('dashboard')
+                login(request, user)
+                return redirect('dashboard')
 
         else:
             errors = True
             return render(request, 'timesheets/index.html', {'form': form, "errors": errors})
     else:
-        return render(request, 'timesheets/index.html', {'form': form})
+        return render(request, 'timesheets/index.html', {'form': form, "errors": errors})
 
-# return HttpResponse(template.render('', request))
+
 
 def userLogout(request):
     logout(request)
     return redirect('index')
 
 def dashboard(request):
-
     user_in_group = Group.objects.get(name='employees').user_set.all()
     if request.user not in user_in_group:
-        return render(request, 'timesheets/dashboard.html', {'user': user_in_group})
+        timesheet = Timesheet.objects.all()
+        return render(request, 'timesheets/dashboard.html',
+                      {'timesheets': Timesheet.objects.filter(approving_manager__isnull=False)})
+        #return render(request, 'timesheets/dashboard.html', '')
     else:
         queryset = Timesheet.objects.all()
         context = {
@@ -58,37 +55,16 @@ def dashboard(request):
         }
         return render(request, 'timesheets/dashboard.html', context)
 
+
+
 def timesheet_detail(request, id=None):
+
     instance = get_object_or_404(Timesheet, id=id)
     context = {
         "employee": "Detail",
         "instance": instance,
     }
     return render(request,"timesheets/timesheet_detail.html", context)
-    #if request.method == "POST":
-        #timesheet_id = request.POST.get('timesheet_id')  # You are getting passed article id
-        #ts = Timesheet.objects.get(pk=timesheet_id)  # You are getting instance by id
-        #ts_form = CreateTimesheetForm(request.POST, instance=ts)
-        #ts_form.save()
-    #if request.user.is_active:
-        #return render(request, 'timesheets/dashboard.html', '')
-
-    #else:
-        #return redirect('registration_form')
-
-    #else:
-        #ts = Timesheet.objects.get(employee=request.user).latest("id")
-        #ts_form = CreateTimesheetForm(instance=ts)
-        #timesheet_id = ts.id
-
-    #return render(request,
-        #"timesheets/dashboard.html",
-        #{
-            #"ts_form": ts_form,
-            #"timesheet_id": timesheet_id,
-        #}
-
-    #)
 
 
 # This function-based view handles the requests to the root URL /. See
@@ -207,16 +183,6 @@ def create_timesheet(request):
         form = CreateTimesheetForm(request.POST)
         if form.is_valid():
             try:
-                #current_user = request.user['name']
-                #ts = Timesheet.objects.get_or_create(employee=current_user)
-                #ts.save()
-                #timesheet = Timesheet.objects.create_timesheet(
-                    #total_hours_worked=form.cleaned_data['total_hours_worked'],
-                    #total_hours_break=form.cleaned_data['total_hours_break'],
-                    #submission_date=form.cleaned_data['submission_date'],
-                    #employee=current_user
-                #)
-
                 timesheet = form.save(commit=False)
                 timesheet.employee = request.user
                 timesheet.submission_date = timezone.now()
