@@ -25,23 +25,10 @@
                 {% for timesheet in timesheets %}
                     {% if timesheet.approving_manager == request.user %}
 
-                        <tr>
-                            <td>Employee's name: </td><td>{{ timesheet.employee }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Submission date: </td><td>{{ timesheet.submission_date }}</td>
-                        </tr>
-
-                        <tr>
-                            <td> Total hours break: </td><td>{{ timesheet.total_hours_break }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Totol hours worked: </td><td>{{ timesheet.total_hours_worked }}</td>
-                        </tr>
-
-                        <tr><td><input type="submit" value="Approved" name={{ timesheet.id }}></td></tr>
+                        <tr><td>{% url "detail" id=timesheet.id %}</td>
+                        <td><a href="{{ timesheet.get_absolute_url }}"> {{ timesheet.employee }}</a></td>
+                        <td>{{ timesheet.submission_date }}</td>
+                        <td><input type="submit" value="Approved" name={{ timesheet.id }}></td></tr>
 
                     {% endif %}
               {% endfor %}
@@ -68,11 +55,11 @@
             {% endfor %}
         {% endif %}
         <form method="POST" action="{% url 'create_timesheet' %}">
-            <button action="submit">Create Timesheet</button>
+            <button>Create Timesheet</button>
            {% csrf_token %}
         </form>
         <form method="POST" action="{% url 'userLogout' %}">
-            <button action="submit">Logout</button>
+            <button>Logout</button>
            {% csrf_token %}
         </form>
     </div>

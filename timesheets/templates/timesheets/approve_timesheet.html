@@ -15,11 +15,11 @@
   <div class="block">
 
   </div>
-  <div class="form">
+  <div class="form" align="center">
       <h2>Approve TimeSheets</h2>
       <form method="POST" class="post-form" action="approve_timesheet.html">
           {% csrf_token %}
-          <table>
+          <table >
 
               {% for timesheet in timesheets %}
 
