@@ -188,7 +188,7 @@ def create_timesheet(request):
                 timesheet.submission_date = timezone.now()
                 timesheet.save()
                 return render(request, 'timesheets/messagebox.html',
-                              {'message': 'Error: Timesheet Created.'})
+                              {'message': ' Timesheet Created.'})
             except Exception as e:
                 print(e) # print the error to Django console
                 return render(request, 'timesheets/messagebox.html',
