@@ -9,6 +9,7 @@ from django.core.mail import send_mail
 from models import *
 from datetime import datetime
 from django.utils import timezone
+from django.http import HttpResponse, HttpResponseRedirect
 
 import uuid
 
@@ -32,7 +33,7 @@ def index(request):
             errors = True
             return render(request, 'timesheets/index.html', {'form': form, "errors": errors})
     else:
-        return render(request, 'timesheets/index.html', {'form': form, "errors": errors})
+        return render(request, 'timesheets/index.html',{'form': form})
 
 
 
@@ -66,6 +67,27 @@ def timesheet_detail(request, id=None):
     }
     return render(request,"timesheets/timesheet_detail.html", context)
 
+def timesheet_edit(request, id=None):
+    instance = get_object_or_404(Timesheet, id=id)
+    form = CreateTimesheetForm(request.POST, instance=instance)
+    if form.is_valid():
+        try:
+            timesheet = form.save(commit=False)
+            timesheet.employee = request.user
+            timesheet.submission_date = timezone.now()
+            timesheet.save()
+            return render(request, 'timesheets/messagebox.html',
+                          {'message': ' Timesheet Edited.'})
+        except Exception as e:
+            print(e)  # print the error to Django console
+            return render(request, 'timesheets/messagebox.html',
+                          {'message': 'Error: Unable to edit timesheet.'})
+    context = {
+        "employee": instance.employee,
+        "instance": instance,
+        "form": form,
+    }
+    return render(request,"timesheets/create_timesheet.html", context)
 
 # This function-based view handles the requests to the root URL /. See
 # urls.py for the mapping.
