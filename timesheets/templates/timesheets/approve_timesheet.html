@@ -22,6 +22,9 @@
           <table >
 
               {% for timesheet in timesheets %}
+                  <tr>
+                      <td>Timesheet id: </td><td>{{ timesheet.id}}</td>
+                  </tr>
 
                   <tr>
                       <td>Employee's name: </td><td>{{ timesheet.employee }}</td>
@@ -36,16 +39,29 @@
                   </tr>
 
                   <tr>
-                      <td>Totel hours worked: </td><td>{{ timesheet.total_hours_worked }}</td>
+                      <td>Total hours worked: </td><td>{{ timesheet.total_hours_worked }}</td>
                   </tr>
 
-                  <tr><td><input type="submit" value="Approve"></td></tr>
-
+                  <tr><td><input type="submit" value="Approve" name="{{ timesheet.id }}"></td></tr>
 
               {% endfor %}
 
           </table>
       </form>
+  <div align="center" class="pagination">
+            <span class="step-links">
+                {% if object_list.has_previous %}
+                    <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                </span>
+                {% if object_list.has_next %}
+                    <a href="?{{ page_request_var }}={{ object_list.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        <br>
   </div>
     <div class="cta"><a href="dashboard.html">Back to Dashboard</a></div>
 </div>

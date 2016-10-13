@@ -23,17 +23,31 @@
             <h2> Successful Approved Timesheets List </h2>
             <table>
                 {% for timesheet in timesheets %}
-                    {% if timesheet.approving_manager == request.user %}
+                    {% if timesheet.approving_manager == request.user and timesheet.approving_manager != Null %}
 
                         <tr><td>{% url "detail" id=timesheet.id %}</td>
                         <td><a href="{{ timesheet.get_absolute_url }}"> {{ timesheet.employee }}</a></td>
-                        <td>{{ timesheet.submission_date }}</td>
-                        <td><input type="submit" value="Approved" name={{ timesheet.id }}></td></tr>
+                        <td><small>{{ timesheet.approval_date|timesince }} ago</small></td>
+                        <td><input type="button" value="Approved" ></td></tr>
 
                     {% endif %}
               {% endfor %}
 
           </table>
+            <div align="center" class="pagination">
+            <span class="step-links">
+                {% if timesheets.has_previous %}
+                    <a href="?page={{ timesheets.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ timesheets.number }} of {{ timesheets.paginator.num_pages }}.
+                </span>
+                {% if timesheets.has_next %}
+                    <a href="?page={{ timesheets.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+            </div>
+            <br>
              <a href="{% url 'approve_timesheet' %}"><button>Approve Timesheets</button></a>
 
         {% endif %}
@@ -41,20 +55,43 @@
             <h2> Timesheets Submitted </h2>
             {% for obj in object_list %}
                 {% if obj.employee == request.user %}
-
                     <table>
-                        <tr>
-                            <td>{% url "detail" id=obj.id %}</td>
-                            <td><a href="{{ obj.get_absolute_url }}"> {{ obj.employee }}</a></td>
-                            <td>{{ obj.submission_date }}</td>
-                            <td><a href= '{% url "edit" id=obj.id %}' > Edit</a></td>
 
-                        </tr>
+                        <tr>
+                            <td><a href="{{ obj.get_absolute_url }}"> {% url "detail" id=obj.id %} {{ obj.employee }}</a>
+                            <td><small>{{ obj.submission_date|timesince }} ago</small></td>
+
+
+                        {% if obj.approving_manager != Null %}
+                            <td>Status: Approved</td><tr>
+
+                        {% else %}
+                            <td>Status: Pending</td></tr>
+                            <tr><td> </td><td> </td><td><a href= '{% url "edit" id=obj.id %}' > Edit</a>
+                                    <a href= '{% url "delete" id=obj.id %}' > Delete</a></td></tr>
+                            {% endif %}
                     </table>
+
                     <br/>
+
                 {% endif %}
             {% endfor %}
+            <div align="center" class="pagination">
+            <span class="step-links">
+                {% if object_list.has_previous %}
+                    <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                </span>
+                {% if object_list.has_next %}
+                    <a href="?{{ page_request_var }}={{ object_list.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        <br>
         {% endif %}
+
         <form method="POST" action="{% url 'create_timesheet' %}">
             <button>Create Timesheet</button>
            {% csrf_token %}

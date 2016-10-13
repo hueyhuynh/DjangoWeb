@@ -106,5 +106,8 @@ body {
   color: #333333;
   text-decoration: none;
 }
+.form a {
+  text-decoration: none;
+}
 
 

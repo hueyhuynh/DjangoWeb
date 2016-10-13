@@ -19,9 +19,11 @@
         <h2 align="center">{{ message }}</h2>
 
     </div>
-
-
+    {% if request.user == Null %}
+    <div class="cta"><a href="dashboard.html"> Back to Login </a></div>
+    {% else %}
     <div class="cta"><a href="dashboard.html"> Back to Dashboard</a></div>
+    {% endif %}
 </div>
 </body>
 </html>

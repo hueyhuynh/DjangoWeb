@@ -18,12 +18,13 @@
   <div class="form" align="center">
       <h2> Timesheet Detail</h2>
       <table>
+          <tr><td>Timesheet id: </td><td>{{ instance.id }}</td></tr>
           <tr><td>Employee name: </td><td> {{ instance.employee }}</td></tr>
           <tr><td>Submission date: </td><td> {{ instance.submission_date }}</td></tr>
           <tr><td>Total hours worked: </td><td> {{ instance.total_hours_worked }}</td></tr>
           <tr><td>Total hours break: </td><td>{{ instance.total_hours_break }}</td></tr>
           <tr><td>Approved Manager </td><td>{{ instance.approving_manager }}</td></tr>
-          <tr><td>Timesheet id: </td><td>{{ instance.id }}</td></tr>
+          <tr><td>Approval Date </td><td>{{ instance.approval_date }}</td></tr>
       </table>
 
 
