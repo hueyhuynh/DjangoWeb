@@ -75,7 +75,7 @@ class PasswordChangeForm(forms.Form):
         try:
             user = User.objects.get(password=self.cleaned_data['CurrentPassword'],username__iexact=self.cleaned_data['username'])
         except User.DoesNotExist:
-            raise forms.ValidationError(_("Either username does not exists or email is wrong."))
+            raise forms.ValidationError(_("Either username does not exists or current password is wrong."))
         return self.cleaned_data['CurrentPassword']
 
     def clean(self):
