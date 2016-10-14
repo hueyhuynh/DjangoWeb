@@ -164,7 +164,7 @@ def dashboard(request):
                       {'timesheets': timesheets})
         #return render(request, 'timesheets/dashboard.html', '')
     else:
-        queryset_list = Timesheet.objects.all()
+        queryset_list = Timesheet.objects.all().filter(employee=request.user)
         paginator = Paginator(queryset_list, 5) #Show 5 objects per page
         page_request_var = "page"
         page = request.GET.get(page_request_var)
