@@ -47,23 +47,22 @@
               {% endfor %}
 
           </table>
-      </form>
-  <div align="center" class="pagination">
+      <div align="center" class="pagination">
             <span class="step-links">
-                {% if object_list.has_previous %}
-                    <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}">previous</a>
+                {% if timesheets.has_previous %}
+                    <a href="?page={{ timesheets.previous_page_number }}">previous</a>
                 {% endif %}
                 <span class="current">
-                    Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                    Page {{ timesheets.number }} of {{ timesheets.paginator.num_pages }}.
                 </span>
-                {% if object_list.has_next %}
-                    <a href="?{{ page_request_var }}={{ object_list.next_page_number }}">next</a>
+                {% if timesheets.has_next %}
+                    <a href="?page={{ timesheets.next_page_number }}">next</a>
                 {% endif %}
             </span>
         </div>
-        <br>
+      </form>
   </div>
-    <div class="cta"><a href="dashboard.html">Back to Dashboard</a></div>
+<div class="cta"><a href="dashboard.html">Back to Dashboard</a></div>
 </div>
 </body>
 </html>

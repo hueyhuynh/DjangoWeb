@@ -149,7 +149,7 @@ def password_reset(request):
 def dashboard(request):
     user_in_group = Group.objects.get(name='employees').user_set.all()
     if request.user not in user_in_group:
-        timesheet_list = Timesheet.objects.all()
+        timesheet_list = Timesheet.objects.filter(approving_manager__isnull=False)
         paginator = Paginator(timesheet_list, 5)  # Show 5 objects per page
         page = request.GET.get('page')
         try:
@@ -161,7 +161,7 @@ def dashboard(request):
             # If page is out of range (e.g. 9999) deliver last page of results.
             timesheets = paginator.page(paginator.num_pages)
         return render(request, 'timesheets/dashboard.html',
-                      {'timesheets': Timesheet.objects.filter(approving_manager__isnull=False)})
+                      {'timesheets': timesheets})
         #return render(request, 'timesheets/dashboard.html', '')
     else:
         queryset_list = Timesheet.objects.all()
@@ -176,8 +176,6 @@ def dashboard(request):
         except EmptyPage:
             #If page is out of range (e.g. 9999) deliver last page of results.
             queryset =paginator.page(paginator.num_pages)
-
-
         context = {
             "object_list": queryset,
             "employee": "List",
@@ -247,20 +245,34 @@ def timesheet_delete(request, id=None):
                           {'message': ' Unable to delete timesheet.'})
 
 def approve_timesheet(request):
-    if request.method == 'POST':
-        results = request.POST.dict()
-        try:
+    timesheet_list = Timesheet.objects.filter(approving_manager__isnull=True)
+    paginator = Paginator(timesheet_list, 5)  # Show 5 objects per page
+    page = request.GET.get('page')
+    try:
+        timesheets = paginator.page(page)
+        if request.method == 'POST':
+
+            results = request.POST.dict()
             approved_timesheet_id = int(results.keys()[results.values().index(u'Approve')])
             manager = request.user
             timesheet = Timesheet.objects.get(pk=approved_timesheet_id)
-            if manager.groups.filter(name="managers").exists():
-                timesheet.approving_manager = manager
-                timesheet.approval_date = timezone.now()
-                timesheet.save()
-        except Exception as e:
-            print(e) # Print the error to Django console
-            return render(request, 'timesheets/messagebox.html',
-                              {'message': 'Error: Unable to approve timesheet.'})
 
-    return render(request, 'timesheets/approve_timesheet.html', {'timesheets': Timesheet.objects.filter(approving_manager__isnull=True)})
+            try:
+
+                if manager.groups.filter(name="managers").exists():
+                    timesheet.approving_manager = manager
+                    timesheet.approval_date = timezone.now()
+                    timesheet.save()
+            except Exception as e:
+                print(e) # Print the error to Django console
+                return render(request, 'timesheets/messagebox.html',
+                              {'message': 'Error: Unable to approve timesheet.'})
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        timesheets = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999) deliver last page of results.
+        timesheets = paginator.page(paginator.num_pages)
+
+    return render(request, 'timesheets/approve_timesheet.html', {'timesheets': timesheets })
 

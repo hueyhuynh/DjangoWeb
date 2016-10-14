@@ -27,7 +27,7 @@
 
                         <tr><td>{% url "detail" id=timesheet.id %}</td>
                         <td><a href="{{ timesheet.get_absolute_url }}"> {{ timesheet.employee }}</a></td>
-                        <td><small>{{ timesheet.approval_date|timesince }} ago</small></td>
+                        <td><small>{{ timesheet.submission_date|timesince }} ago</small></td>
                         <td><input type="button" value="Approved" ></td></tr>
 
                     {% endif %}
