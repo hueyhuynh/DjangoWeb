@@ -47,19 +47,7 @@
               {% endfor %}
 
           </table>
-      <div align="center" class="pagination">
-            <span class="step-links">
-                {% if timesheets.has_previous %}
-                    <a href="?page={{ timesheets.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="current">
-                    Page {{ timesheets.number }} of {{ timesheets.paginator.num_pages }}.
-                </span>
-                {% if timesheets.has_next %}
-                    <a href="?page={{ timesheets.next_page_number }}">next</a>
-                {% endif %}
-            </span>
-        </div>
+
       </form>
   </div>
 <div class="cta"><a href="dashboard.html">Back to Dashboard</a></div>
