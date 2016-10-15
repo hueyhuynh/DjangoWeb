@@ -2,6 +2,7 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {% load static %}
+{% load timesheets_extras %}
 <link href="../../static/timesheets/styles.css" rel="stylesheet" />
 
 <body>
@@ -15,15 +16,88 @@
   <div class="block">
   </div>
     <div class="form">
-        <h2>Welcome {{ user.get_username }}!</h2>
-        <h2> Thank for logging in.</h2>
+        <h2>Welcome {{ request.user }}!</h2>
 
-        <form method="POST" action="{% url 'userLogout' %}">
-            <button action="submit">Logout</button>
+
+        {% if request.user|has_group:"managers" %}
+            <h2> Successful Approved Timesheets List </h2>
+            <table>
+                {% for timesheet in timesheets %}
+                    {% if timesheet.approving_manager == request.user and timesheet.approving_manager != Null %}
+
+                        <tr><td>{% url "detail" id=timesheet.id %}</td>
+                        <td><a href="{{ timesheet.get_absolute_url }}"> {{ timesheet.employee }}</a></td>
+                        <td><small>{{ timesheet.submission_date|timesince }} ago</small></td>
+                        <td><input type="button" value="Approved" ></td></tr>
+
+                    {% endif %}
+              {% endfor %}
+
+          </table>
+            <div align="center" class="pagination">
+            <span class="step-links">
+                {% if timesheets.has_previous %}
+                    <a href="?page={{ timesheets.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ timesheets.number }} of {{ timesheets.paginator.num_pages }}.
+                </span>
+                {% if timesheets.has_next %}
+                    <a href="?page={{ timesheets.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+            </div>
+            <br>
+             <a href="{% url 'approve_timesheet' %}"><button>Approve Timesheets</button></a>
+
+        {% endif %}
+        {% if request.user|has_group:"employees" %}
+            <h2> Timesheets Submitted </h2>
+            {% for obj in object_list %}
+                {% if obj.employee == request.user %}
+                    <table>
+
+                        <tr>
+                            <td><a href="{{ obj.get_absolute_url }}"> {% url "detail" id=obj.id %} {{ obj.employee }}</a>
+                            <td><small>{{ obj.submission_date|timesince }} ago</small></td>
+
+
+                        {% if obj.approving_manager != Null %}
+                            <td>Status: Approved</td><tr>
+
+                        {% else %}
+                            <td>Status: Pending</td></tr>
+                            <tr><td> </td><td> </td><td><a href= '{% url "edit" id=obj.id %}' > Edit</a>
+                                    <a href= '{% url "delete" id=obj.id %}' > Delete</a></td></tr>
+                            {% endif %}
+                    </table>
+
+                    <br/>
+
+                {% endif %}
+            {% endfor %}
+            <div align="center" class="pagination">
+            <span class="step-links">
+                {% if object_list.has_previous %}
+                    <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                </span>
+                {% if object_list.has_next %}
+                    <a href="?{{ page_request_var }}={{ object_list.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        <br>
+        {% endif %}
+
+        <form method="POST" action="{% url 'create_timesheet' %}">
+            <button>Create Timesheet</button>
            {% csrf_token %}
         </form>
-        <form method="POST" action="{% url 'create_timesheet' %}">
-            <button action="submit">Create Timesheet</button>
+        <form method="POST" action="{% url 'userLogout' %}">
+            <button>Logout</button>
            {% csrf_token %}
         </form>
     </div>

@@ -48,7 +48,8 @@ class PasswordChangeForm(forms.Form):
     username = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)),
                                 label=_("Username"), error_messages={
             'invalid': _("This value must contain only letters, numbers and underscores.")})
-    # token = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("Token"))
+    email = forms.EmailField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Email address"))
+    CurrentPassword = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("Current Password"))
     password = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)),
                                label=_("Password"))
     password2 = forms.CharField(
@@ -63,20 +64,19 @@ class PasswordChangeForm(forms.Form):
     # for the field.
     # We are doing a custom validation for the 'password2' field and raising
     # a validation error if the password and its confirmation do not match
-    def clean_username(self):
+    def clean_email(self):
         try:
-            user = User.objects.get(username__iexact=self.cleaned_data['username'])
+            user = User.objects.get(email__iexact=self.cleaned_data['email'])
         except User.DoesNotExist:
-            raise forms.ValidationError(_("The username does not exists. Please try another one."))
-        return self.cleaned_data['username']
+            raise forms.ValidationError(_("The email does not exists. Please try another one."))
+        return self.cleaned_data['email']
 
-        # def clean_token(self):
-        #    try:
-        #        user = User.objects.get(username__iexact=self.cleaned_data['username'], password=self.cleaned_data['token'])
-        #    except User.DoesNotExist:
-        #       raise forms.ValidationError(_("Either username does not exists or token is wrong."))
-
-    # return self.cleaned_data['token']
+    def clean_currentpassword(self):
+        try:
+            user = User.objects.get(password=self.cleaned_data['CurrentPassword'],username__iexact=self.cleaned_data['username'])
+        except User.DoesNotExist:
+            raise forms.ValidationError(_("Either username does not exists or current password is wrong."))
+        return self.cleaned_data['CurrentPassword']
 
     def clean(self):
         if 'password' in self.cleaned_data and 'password2' in self.cleaned_data:
@@ -98,3 +98,4 @@ class CreateTimesheetForm(ModelForm):
     class Meta:
         model = Timesheet
         fields = 'total_hours_worked', 'total_hours_break'
+

@@ -1,25 +1,29 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 {% load static %}
 <link href="../../static/timesheets/styles.css" rel="stylesheet" />
 
 <body>
 
 <div class="title">
-  <h1><a href=".">TimeSheets</a></h1>
+  <h1><a href="dashboard.html">TimeSheets</a></h1>
 </div>
 
 <!-- Form Module-->
 <div class="module form-module">
-  <div class="block">
+    <div class="block">
 
-  </div>
+    </div>
     <div class="form">
         <h2 align="center">{{ message }}</h2>
 
     </div>
-    <div class="cta"><a href=".">Back to Login</a></div>
+    {% if request.user == Null %}
+    <div class="cta"><a href="dashboard.html"> Back to Login </a></div>
+    {% else %}
+    <div class="cta"><a href="dashboard.html"> Back to Dashboard</a></div>
+    {% endif %}
 </div>
 </body>
 </html>

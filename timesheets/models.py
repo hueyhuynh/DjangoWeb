@@ -2,14 +2,8 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime
+from django.urls import reverse
 
-# Create timesheet object
-#class TimesheetManager(models.Manager):
-    #def create_timesheet(self, total_hours_worked, total_hours_break, submission_date, approval_date, employee, approving_manager):
-        #timesheet = self.create(total_hours_worked=total_hours_worked, total_hours_break=total_hours_break,
-                                #submission_date=submission_date, approval_date=approval_date,
-                                #employee=employee, approving_manager=approving_manager)
-        #return timesheet
 
 # Create your models here.
 class Timesheet(models.Model):
@@ -31,9 +25,16 @@ class Timesheet(models.Model):
         related_name='manager_that_approved_timesheet',
         on_delete=models.CASCADE
     )
+
+
     def __str__(self):
         return format(self.employee)
-    #objects = TimesheetManager()
+
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={"id": self.id})
+
+    class Meta:
+        ordering = ["-submission_date"]
 
 class PasswordReset(models.Model):
     date_time = models.DateTimeField(default=datetime.now(), blank=True)
