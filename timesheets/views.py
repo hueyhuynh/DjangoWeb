@@ -149,6 +149,7 @@ def password_reset(request):
 
 def dashboard(request):
     user_in_group = Group.objects.get(name='employees').user_set.all()
+    #if user is not in a group display the timesheet of their employees
     if request.user not in user_in_group:
         timesheet_list = Timesheet.objects.all().filter(approving_manager=request.user)
         paginator = Paginator(timesheet_list, 5)  # Show 5 objects per page
@@ -165,6 +166,7 @@ def dashboard(request):
                       {'timesheets': timesheets})
         #return render(request, 'timesheets/dashboard.html', '')
     else:
+        #if user is not in a group, they are an employee, display their own timesheets.
         queryset_list = Timesheet.objects.all().filter(employee=request.user)
         paginator = Paginator(queryset_list, 5) #Show 5 objects per page
         page_request_var = "page"
