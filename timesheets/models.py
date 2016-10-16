@@ -7,10 +7,14 @@ from django.urls import reverse
 
 # Create your models here.
 class Timesheet(models.Model):
+    #integer fields for the total hours worked and hours on break
     total_hours_worked = models.IntegerField()
     total_hours_break = models.IntegerField()
+    #this field will be used for tracking the submission of the timesheet, this is automatic
     submission_date = models.DateTimeField('Date the timesheet was submitted by the employee')
+    #this field will be used for tracking the approval of the timesheet, this is automatic
     approval_date = models.DateTimeField(null=True)
+    #Used to get the employee's ID (Unique) this is the same for the approving manager
     employee = models.ForeignKey(
         User,
         null=True,

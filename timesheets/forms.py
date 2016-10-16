@@ -89,13 +89,17 @@ class PasswordResetForm(forms.Form):
 
     def clean_email(self):
         try:
+            #checks email entered and whether or not it exists, if so an email will be sent back
             user = User.objects.get(email__iexact=self.cleaned_data['email'])
         except User.DoesNotExist:
+            #used if the email does not exist
             raise forms.ValidationError(_("The email does not exists. Please try another one."))
         return self.cleaned_data['email']
 
 class CreateTimesheetForm(ModelForm):
     class Meta:
+        #Creates a model for the Timesheet object
         model = Timesheet
+        #2 temp fields for the hours worked and hours on break
         fields = 'total_hours_worked', 'total_hours_break'
 

@@ -25,6 +25,7 @@ def index(request):
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
+            #if user is returned through the authenticate method - login through the dashboard
             if user.is_authenticated:
 
                 login(request, user)
@@ -184,14 +185,18 @@ def dashboard(request):
         return render(request, 'timesheets/dashboard.html', context)
 
 def create_timesheet(request):
+    # post method through the form
     if request.method == 'POST':
         form = CreateTimesheetForm(request.POST)
         if form.is_valid():
             try:
                 timesheet = form.save(commit=False)
+                #takes the user that is currently logged in
                 timesheet.employee = request.user
+                #takes the current time for the submission date
                 timesheet.submission_date = timezone.now()
                 timesheet.save()
+                #inform user of the timesheet update
                 return render(request, 'timesheets/messagebox.html',
                               {'message': 'Timesheet Created.'})
             except Exception as e:
