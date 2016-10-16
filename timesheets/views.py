@@ -21,10 +21,12 @@ def index(request):
     form = UserForm()
     errors = False
     if request.method == 'POST':
+        #Request signin form - Gets username and password
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
+            #if user is returned through the authenticate method - login through the dashboard
             if user.is_authenticated:
 
                 login(request, user)
@@ -164,6 +166,7 @@ def dashboard(request):
                       {'timesheets': timesheets})
         #return render(request, 'timesheets/dashboard.html', '')
     else:
+        #views existing timesheets of that employee
         queryset_list = Timesheet.objects.all().filter(employee=request.user)
         paginator = Paginator(queryset_list, 5) #Show 5 objects per page
         page_request_var = "page"
@@ -184,14 +187,18 @@ def dashboard(request):
         return render(request, 'timesheets/dashboard.html', context)
 
 def create_timesheet(request):
+    # post method through the form
     if request.method == 'POST':
         form = CreateTimesheetForm(request.POST)
         if form.is_valid():
             try:
                 timesheet = form.save(commit=False)
+                #takes the user that is currently logged in
                 timesheet.employee = request.user
+                #takes the current time for the submission date
                 timesheet.submission_date = timezone.now()
                 timesheet.save()
+                #inform user of the timesheet update
                 return render(request, 'timesheets/messagebox.html',
                               {'message': ' Timesheet Created.'})
             except Exception as e:

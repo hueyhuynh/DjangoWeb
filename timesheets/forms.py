@@ -45,10 +45,13 @@ class RegistrationForm(forms.Form):
 
 
 class PasswordChangeForm(forms.Form):
+    # obtain user name from form and parse it into a error check
     username = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)),
                                 label=_("Username"), error_messages={
             'invalid': _("This value must contain only letters, numbers and underscores.")})
+    # obtain email from form and parse it into a error check
     email = forms.EmailField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Email address"))
+    # obtain password and is required
     CurrentPassword = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("Current Password"))
     password = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)),
                                label=_("Password"))
@@ -95,6 +98,7 @@ class PasswordResetForm(forms.Form):
         return self.cleaned_data['email']
 
 class CreateTimesheetForm(ModelForm):
+    # Pass the ModelForm through to the form class with the model Timesheet and the 2 fields of hours worked and hours break.
     class Meta:
         model = Timesheet
         fields = 'total_hours_worked', 'total_hours_break'
